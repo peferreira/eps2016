@@ -34,9 +34,15 @@ int main()
   zere_tabuleiro(tabuleiro,MAX,MAX);
   leia_configuracao_inicial(tabuleiro,&nlin,&ncol);
   gera_tabuleiro_com_borda(tabuleiro,tabuleiroBORDA,nlin,ncol);
-  /*imprima_tabuleiro_borda(tabuleiroBORDA,nlin,ncol);*/
+  imprima_tabuleiro_borda(tabuleiroBORDA,nlin,ncol);
+  retira_borda_tabuleiro(tabuleiroBORDA, tabuleiro, nlin, ncol);
   imprima_tabuleiro(tabuleiro,nlin,ncol);
   return 0;
+}
+
+int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
+             int nlin, int ncol, int instante, int *novosativados){
+    return 1;
 }
 
 void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2][MAX+2], int nlin, int ncol){
@@ -46,11 +52,11 @@ void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2]
   {
     for (j = 0; j < ncol+2; j++)
     {
-      if(i == 0 || j == 0 || i == nlin+1 || j == nlin+2){
+      if(i == 0 || j == 0 || i == nlin+1|| j == ncol+1){
           tabuleiroBORDA[i][j] = -1;
       }
       else{
-        tabuleiroBORDA[i+1][j+1] = tabuleiro[i][j];
+        tabuleiroBORDA[i][j] = tabuleiro[i-1][j-1];
       }
     }
   }
@@ -116,13 +122,13 @@ void imprima_tabuleiro_borda(int tabuleiro[MAX+2][MAX+2], int nlin, int ncol)
 {
   int i,j;
   i = 0; j = 0;
-  for (i = 0; i < nlin; i++)
+  for (i = 0; i < nlin+2; i++)
   {
-    for (j = 0; j < ncol; j++)
+    for (j = 0; j < ncol+2; j++)
     {
       printf("%d  ", tabuleiro[i][j]);
     }
-
+    printf("\n");
   }
 }
 
