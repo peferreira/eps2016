@@ -45,6 +45,18 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
     return 1;
 }
 
+int conta_vizinhos(int nlin, int ncol, int i, int j){
+  int m,n,vizinhos;
+  vizinhos = 0;
+  m = n = 0;
+  if(i == 0 || i == nlin+1)
+      m=1;
+  if(j == 0 || j == ncol+1)
+      n=1;
+  vizinhos = 4 - m - n;
+  return vizinhos;
+}
+
 void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2][MAX+2], int nlin, int ncol){
   int i,j;
   i = 0; j = 0;
