@@ -19,7 +19,7 @@ void printf_tracejado(int ncol);
 void printf_ncol(int ncol);
 int conta_vizinhos(int nlin, int ncol, int i, int j);
 void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol);
-
+void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor);
 
 /*recebe uma matriz atual, uma matriz para adicionar os valores de deslocamento
 para posicoes instaveis uma posicao e devolve 1 se a posicao estiver instavel*/
@@ -29,27 +29,48 @@ para posicoes instaveis uma posicao e devolve 1 se a posicao estiver instavel*/
 
 int main()
 {
-  int instaveis;
-  int novosativados;
+  int instante;
+  int espalhamentos, instaveis;
+  int novosativados, nelementos;
   int nlin, ncol;
   int tabuleiro[MAX][MAX];
+  int ativacao[MAX][MAX];
   instaveis = 0;
-  /*int tabuleiroBORDA[MAX+2][MAX+2];*/
+  novosativados = espalhamentos = 0;
   zere_tabuleiro(tabuleiro,MAX,MAX);
   leia_configuracao_inicial(tabuleiro,&nlin,&ncol);
-  /*gera_tabuleiro_com_borda(tabuleiro,tabuleiroBORDA,nlin,ncol);
-  imprima_tabuleiro_borda(tabuleiroBORDA,nlin,ncol);
-  retira_borda_tabuleiro(tabuleiroBORDA, tabuleiro, nlin, ncol);*/
-
+  inicializa_tabuleiro(ativacao,nlin,ncol, -1);
+  nelementos = nlin*ncol;
+  instante = 0;
+  printf("Instante %d:\n", instante);
   imprima_tabuleiro(tabuleiro,nlin,ncol);
-  instaveis = espalhe(tabuleiro, tabuleiro, nlin, ncol, 3, &novosativados);
-  while(instaveis > 0){
+  instaveis = espalhe(tabuleiro, ativacao, nlin, ncol, instante, &novosativados);
+  espalhamentos+= instaveis;
+  while(nelementos - novosativados > 0 && instaveis > 0){
+    instante++;
+    printf("Instante %d:\n", instante);
     imprima_tabuleiro(tabuleiro,nlin,ncol);
-    instaveis = espalhe(tabuleiro, tabuleiro, nlin, ncol, 3, &novosativados);
+    instaveis = 0;
+    instaveis = espalhe(tabuleiro, ativacao, nlin, ncol, instante, &novosativados);
+    espalhamentos += instaveis;
   }
+  instante++;
+  printf("Instante %d:\n", instante);
+  imprima_tabuleiro(tabuleiro,nlin,ncol);
 
-
-
+  printf("Tabuleiro %d x %d, %d graos.\n", nlin,ncol,instaveis);
+  printf("Simulacao encerrada no instante %d.\n", instante);
+  printf("Total de espalhamentos ao longo do processo: %d\n", espalhamentos);
+  printf("Total de casas que nunca foram ativadas: %d (%.1f)\n",nelementos-novosativados,0.0);
+  if(nelementos - novosativados > 0){
+    printf("Sistema finito.\n");
+  } else{
+    printf("Sistema infinito.\n");
+  }
+  printf("Configuracao quando detectado:\n");
+  imprima_tabuleiro(tabuleiro,nlin,ncol);
+  printf("Primeiro instante de ativacao de cada casa:\n");
+  imprima_tabuleiro(ativacao,nlin,ncol);
 
   return 0;
 }
@@ -85,7 +106,14 @@ void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol)
       tabuleiro[i][j]--;
     }
 }
-
+int ativa_posicao(int ativacao[MAX][MAX], int i, int j, int instante)
+{
+  if(ativacao[i][j] == -1){
+    ativacao[i][j] = instante;
+    return 1;
+  }
+  return 0;
+}
 int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
              int nlin, int ncol, int instante, int *novosativados){
     int i,j,instaveis;
@@ -100,6 +128,7 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
           if(copia_tabuleiro[i][j] >= conta_vizinhos(nlin,ncol,i,j))
           {
             instaveis++;
+            *novosativados += ativa_posicao(ativacao,i,j,instante);
             espalhe_celula(tabuleiro,i,j,nlin,ncol);
           }
       }
@@ -147,8 +176,7 @@ void retira_borda_tabuleiro(int tabuleiroBORDA[MAX+2][MAX+2], int tabuleiro[MAX]
     }
   }
 }
-
-void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
+void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor)
 {
     int i,j;
     i = 0; j = 0;
@@ -156,9 +184,15 @@ void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
     {
       for (j = 0; j < ncol; j++)
       {
-        tabuleiro[i][j] = 0;
+        tabuleiro[i][j] = valor;
       }
     }
+}
+
+
+void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
+{
+    inicializa_tabuleiro(tabuleiro, nlin, ncol, 0);
 }
 
 
