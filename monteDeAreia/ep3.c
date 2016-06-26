@@ -61,17 +61,18 @@ int main()
   instante++;
   printf("Instante %d:\n", instante);
   imprima_tabuleiro(tabuleiro,nlin,ncol);
-  frac = (nelementos-novosativados)/nelementos;
+  frac = 100*(float)(nelementos-novosativados)/(float)nelementos;
   printf("Tabuleiro %d x %d, %d graos.\n", nlin,ncol,conta_num_graos(tabuleiro,nlin,ncol));
   printf("Simulacao encerrada no instante %d.\n", instante);
   printf("Total de espalhamentos ao longo do processo: %d\n", espalhamentos);
   printf("Total de casas que nunca foram ativadas: %d (%.1f%%)\n",nelementos-novosativados,frac);
   if(nelementos - novosativados > 0){
     printf("Sistema finito.\n");
+    printf("Configuracao estavel:\n");
   } else{
     printf("Sistema infinito.\n");
+    printf("Configuracao quando detectado:\n");
   }
-  printf("Configuracao quando detectado:\n");
   imprima_tabuleiro(tabuleiro,nlin,ncol);
   printf("Primeiro instante de ativacao de cada casa:\n");
   imprima_tabuleiro(ativacao,nlin,ncol);
@@ -160,11 +161,19 @@ int conta_vizinhos(int nlin, int ncol, int i, int j){
   int m,n,vizinhos;
   vizinhos = 0;
   m = n = 0;
-  if(i == 0 || i == nlin-1)
+  if(i == 0 || i == nlin-1 )
       m=1;
   if(j == 0 || j == ncol-1)
       n=1;
+  if(nlin-1 == 0){
+    m = m + 1;
+  }
+  if(ncol-1 == 0){
+    n = n + 1;
+  }
+
   vizinhos = 4 - m - n;
+
   return vizinhos;
 }
 
