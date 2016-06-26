@@ -12,6 +12,7 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
 
 
 /*funcoes extras*/
+int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol);
 void imprima_tabuleiro_borda(int tabuleiro[MAX+2][MAX+2], int nlin, int ncol);
 void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2][MAX+2],int nlin, int ncol);
 void retira_borda_tabuleiro(int tabuleiroBORDA[MAX+2][MAX+2], int tabuleiro[MAX][MAX],int nlin, int ncol);
@@ -35,6 +36,7 @@ int main()
   int nlin, ncol;
   int tabuleiro[MAX][MAX];
   int ativacao[MAX][MAX];
+  float frac;
   instaveis = 0;
   novosativados = espalhamentos = 0;
   zere_tabuleiro(tabuleiro,MAX,MAX);
@@ -42,6 +44,8 @@ int main()
   inicializa_tabuleiro(ativacao,nlin,ncol, -1);
   nelementos = nlin*ncol;
   instante = 0;
+  printf("Simulador de monte de areia\n");
+  printf("Configuracao inicial\n");
   printf("Instante %d:\n", instante);
   imprima_tabuleiro(tabuleiro,nlin,ncol);
   instaveis = espalhe(tabuleiro, ativacao, nlin, ncol, instante, &novosativados);
@@ -57,11 +61,11 @@ int main()
   instante++;
   printf("Instante %d:\n", instante);
   imprima_tabuleiro(tabuleiro,nlin,ncol);
-
-  printf("Tabuleiro %d x %d, %d graos.\n", nlin,ncol,instaveis);
+  frac = (nelementos-novosativados)/nelementos;
+  printf("Tabuleiro %d x %d, %d graos.\n", nlin,ncol,conta_num_graos(tabuleiro,nlin,ncol));
   printf("Simulacao encerrada no instante %d.\n", instante);
   printf("Total de espalhamentos ao longo do processo: %d\n", espalhamentos);
-  printf("Total de casas que nunca foram ativadas: %d (%.1f)\n",nelementos-novosativados,0.0);
+  printf("Total de casas que nunca foram ativadas: %d (%.1f%%)\n",nelementos-novosativados,frac);
   if(nelementos - novosativados > 0){
     printf("Sistema finito.\n");
   } else{
@@ -74,6 +78,22 @@ int main()
 
   return 0;
 }
+
+
+int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol){
+  int i,j,num_graos;
+  i = j = num_graos = 0;
+
+  for (i = 0; i < nlin; i++)
+  {
+    for (j = 0; j < ncol; j++)
+    {
+      num_graos+= tabuleiro[i][j];
+    }
+  }
+  return num_graos;
+}
+
 
 /*no comeco todos vizinhos estao habilitados
 checa esq, dir, cim, baixo e desabilita caso necessario*/
@@ -225,6 +245,7 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
     printf("|\n");
     printf_tracejado(ncol);
   }
+  printf("\n");
 }
 
 void imprima_tabuleiro_borda(int tabuleiro[MAX+2][MAX+2], int nlin, int ncol)
