@@ -13,19 +13,12 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
 
 /*funcoes extras*/
 int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol);
-void imprima_tabuleiro_borda(int tabuleiro[MAX+2][MAX+2], int nlin, int ncol);
-void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2][MAX+2],int nlin, int ncol);
-void retira_borda_tabuleiro(int tabuleiroBORDA[MAX+2][MAX+2], int tabuleiro[MAX][MAX],int nlin, int ncol);
 void printf_tracejado(int ncol);
 void printf_ncol(int ncol);
 int conta_vizinhos(int nlin, int ncol, int i, int j);
 void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol);
 void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor);
 
-/*recebe uma matriz atual, uma matriz para adicionar os valores de deslocamento
-para posicoes instaveis uma posicao e devolve 1 se a posicao estiver instavel*/
-
-/*cria matriz com borda -1*/
 
 
 int main()
@@ -177,34 +170,6 @@ int conta_vizinhos(int nlin, int ncol, int i, int j){
   return vizinhos;
 }
 
-void gera_tabuleiro_com_borda(int tabuleiro[MAX][MAX], int tabuleiroBORDA[MAX+2][MAX+2], int nlin, int ncol){
-  int i,j;
-  i = 0; j = 0;
-  for (i = 0; i < nlin+2; i++)
-  {
-    for (j = 0; j < ncol+2; j++)
-    {
-      if(i == 0 || j == 0 || i == nlin+1|| j == ncol+1){
-          tabuleiroBORDA[i][j] = -1;
-      }
-      else{
-        tabuleiroBORDA[i][j] = tabuleiro[i-1][j-1];
-      }
-    }
-  }
-}
-
-void retira_borda_tabuleiro(int tabuleiroBORDA[MAX+2][MAX+2], int tabuleiro[MAX][MAX],int nlin, int ncol){
-  int i,j;
-  i = 0; j = 0;
-  for (i = 0; i < nlin; i++)
-  {
-    for (j = 0; j < ncol; j++)
-    {
-      tabuleiro[i][j] = tabuleiroBORDA[i+1][j+1];
-    }
-  }
-}
 void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor)
 {
     int i,j;
@@ -255,20 +220,6 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
     printf_tracejado(ncol);
   }
   printf("\n");
-}
-
-void imprima_tabuleiro_borda(int tabuleiro[MAX+2][MAX+2], int nlin, int ncol)
-{
-  int i,j;
-  i = 0; j = 0;
-  for (i = 0; i < nlin+2; i++)
-  {
-    for (j = 0; j < ncol+2; j++)
-    {
-      printf("%d  ", tabuleiro[i][j]);
-    }
-    printf("\n");
-  }
 }
 
 void printf_ncol(int ncol){
