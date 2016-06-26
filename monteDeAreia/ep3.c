@@ -18,6 +18,8 @@ void printf_ncol(int ncol);
 int conta_vizinhos(int nlin, int ncol, int i, int j);
 void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol);
 void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor);
+int conta_max_ndig_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol);
+int conta_ndig(int valor);
 
 
 
@@ -88,6 +90,35 @@ int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol){
   return num_graos;
 }
 
+int conta_ndig(int valor)
+{
+  int ndig = 0;
+  if(valor < 0){
+    ndig++;
+    valor = valor*-1;
+  }
+  while(valor > 0){
+    valor=valor/10;
+    ndig++;
+  }
+  return ndig;
+}
+
+int conta_max_ndig_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
+{
+  int i,j,max_ndig, ndig;
+  i = j = max_ndig = ndig= 0;
+  for (i = 0; i < nlin; i++)
+  {
+    for (j = 0; j < ncol; j++)
+    {
+      ndig = conta_ndig(tabuleiro[i][j]);
+      if(ndig > max_ndig)
+        max_ndig = ndig;
+    }
+  }
+  return max_ndig;
+}
 
 /*no comeco todos vizinhos estao habilitados
 checa esq, dir, cim, baixo e desabilita caso necessario*/
