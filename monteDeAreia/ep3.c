@@ -25,7 +25,6 @@ int conta_ndig(int valor);
 
 int main()
 {
-
   int instante;
   int espalhamentos, instaveis;
   int novosativados, nelementos;
@@ -153,6 +152,7 @@ void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol)
       tabuleiro[i][j]--;
     }
 }
+
 int ativa_posicao(int ativacao[MAX][MAX], int i, int j, int instante)
 {
   if(ativacao[i][j] == -1){
@@ -222,39 +222,6 @@ void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
     inicializa_tabuleiro(tabuleiro, nlin, ncol, 0);
 }
 
-
-/*void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
-{
-  int i,j;
-  i = 0; j = 0;
-  printf_ncol(ncol);
-  printf_tracejado(ncol);
-
-  for (i = 0; i < nlin; i++)
-  {
-    if(i < 10){
-      printf("  %d ",i);
-    } else if(i < 100){
-      printf("  %d ",i);
-    } else {
-      printf(" %d ",i);
-    }
-    for (j = 0; j < ncol; j++)
-    {
-      if(tabuleiro[i][j] < 10){
-          printf("|  %d ", tabuleiro[i][j]);
-      } else if (tabuleiro[i][j] < 100){
-          printf("| %d ", tabuleiro[i][j]);
-      } else{
-          printf("|%d ", tabuleiro[i][j]);
-      }
-    }
-    printf("|\n");
-    printf_tracejado(ncol);
-  }
-  printf("\n");
-}
-*/
 void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 {
   int i,j,ndig;
@@ -265,7 +232,7 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 
   for (i = 0; i < nlin; i++)
   {
-    printf(" %*d ",ndig,i);
+    printf("  %d ",i);
     for (j = 0; j < ncol; j++)
     {
       printf("| %*d ", ndig,tabuleiro[i][j]);
@@ -275,22 +242,20 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
     printf_tracejado(ncol, ndig);
   }
   printf("\n");
-
 }
+
 void printf_ncol(int ncol, int ndig){
     int i;
-    printf("  %*c ", ndig,' ');
-
+    printf("     ");
     for (i = 0; i < ncol; i++){
         printf(" %*d  ",ndig,i);
     }
     printf("\n");
 }
 
-
 void printf_tracejado(int ncol, int ndig){
     int i,j;
-    printf(" %*c +",ndig,' ');
+    printf("    +");
     for (i = 0; i < ncol; i++){
 
       for(j = 0; j <= ndig; j++){
@@ -301,7 +266,6 @@ void printf_tracejado(int ncol, int ndig){
     }
     printf("\n");
 }
-
 
 void leia_configuracao_inicial(int tabuleiro[MAX][MAX], int *nlin, int *ncol)
 {
@@ -316,7 +280,6 @@ void leia_configuracao_inicial(int tabuleiro[MAX][MAX], int *nlin, int *ncol)
     scanf("%d", &i);
   }
 }
-
 
 void copie_matriz(int origem[MAX][MAX], int destino[MAX][MAX],
                    int nlin, int ncol){
