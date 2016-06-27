@@ -13,8 +13,8 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
 
 /*funcoes extras*/
 int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol);
-void printf_tracejado(int ncol);
-void printf_ncol(int ncol);
+void printf_tracejado(int ncol, int ndig);
+void printf_ncol(int ncol, int ndig);
 int conta_vizinhos(int nlin, int ncol, int i, int j);
 void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol);
 void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor);
@@ -25,6 +25,7 @@ int conta_ndig(int valor);
 
 int main()
 {
+
   int instante;
   int espalhamentos, instaveis;
   int novosativados, nelementos;
@@ -71,7 +72,6 @@ int main()
   imprima_tabuleiro(tabuleiro,nlin,ncol);
   printf("Primeiro instante de ativacao de cada casa:\n");
   imprima_tabuleiro(ativacao,nlin,ncol);
-
   return 0;
 }
 
@@ -93,6 +93,8 @@ int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol){
 int conta_ndig(int valor)
 {
   int ndig = 0;
+  if(valor == 0)
+    return 1;
   if(valor < 0){
     ndig++;
     valor = valor*-1;
@@ -221,7 +223,7 @@ void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 }
 
 
-void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
+/*void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 {
   int i,j;
   i = 0; j = 0;
@@ -252,28 +254,50 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
   }
   printf("\n");
 }
+*/
+void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
+{
+  int i,j,ndig;
+  i = 0; j = 0;ndig = 0;
+  ndig = conta_max_ndig_tabuleiro(tabuleiro,nlin,ncol);
+  printf_ncol(ncol, ndig);
+  printf_tracejado(ncol, ndig);
 
-void printf_ncol(int ncol){
+  for (i = 0; i < nlin; i++)
+  {
+    printf(" %*d ",ndig,i);
+    for (j = 0; j < ncol; j++)
+    {
+      printf("| %*d ", ndig,tabuleiro[i][j]);
+
+    }
+    printf("|\n");
+    printf_tracejado(ncol, ndig);
+  }
+  printf("\n");
+
+}
+void printf_ncol(int ncol, int ndig){
     int i;
-    printf("    ");
+    printf("  %*c ", ndig,' ');
 
     for (i = 0; i < ncol; i++){
-        if(i < 10){
-          printf("   %d ",i);
-        } else if(i < 100){
-          printf("  %d ",i);
-        } else {
-          printf(" %d ",i);
-        }
+        printf(" %*d  ",ndig,i);
     }
     printf("\n");
 }
 
-void printf_tracejado(int ncol){
-    int i;
-    printf("    +");
+
+void printf_tracejado(int ncol, int ndig){
+    int i,j;
+    printf(" %*c +",ndig,' ');
     for (i = 0; i < ncol; i++){
-        printf("----+");
+
+      for(j = 0; j <= ndig; j++){
+        printf("-");
+      }
+      printf("-+");
+
     }
     printf("\n");
 }
