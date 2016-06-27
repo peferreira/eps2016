@@ -89,6 +89,7 @@ int conta_num_graos(int tabuleiro[MAX][MAX], int nlin, int ncol){
   return num_graos;
 }
 
+/*recebe um inteiro e retorna o seu numero de digitos*/
 int conta_ndig(int valor)
 {
   int ndig = 0;
@@ -105,6 +106,8 @@ int conta_ndig(int valor)
   return ndig;
 }
 
+/*ao receber um tabuleiro retorna o valor do numero de digitos do
+numero mais alto do tabuleiro*/
 int conta_max_ndig_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 {
   int i,j,max_ndig, ndig;
@@ -153,6 +156,8 @@ void espalhe_celula(int tabuleiro[MAX][MAX], int i, int j, int nlin, int ncol)
     }
 }
 
+/*recebe uma posicao do tabuleiro e a ativa caso a posicao
+nunca tenha sido ativada*/
 int ativa_posicao(int ativacao[MAX][MAX], int i, int j, int instante)
 {
   if(ativacao[i][j] == -1){
@@ -161,6 +166,7 @@ int ativa_posicao(int ativacao[MAX][MAX], int i, int j, int instante)
   }
   return 0;
 }
+/*realiza o espalhamento como pedido no enunciado*/
 int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
              int nlin, int ncol, int instante, int *novosativados){
     int i,j,instaveis;
@@ -182,7 +188,9 @@ int espalhe(int tabuleiro[MAX][MAX], int ativacao[MAX][MAX],
     }
     return instaveis;
 }
-
+/*funcao que dada uma posicao no tabuleiro descobre
+quantos vizinhos aquela posicao tem. Diferencia bordas de posicoes
+centrais*/
 int conta_vizinhos(int nlin, int ncol, int i, int j){
   int m,n,vizinhos;
   vizinhos = 0;
@@ -202,7 +210,7 @@ int conta_vizinhos(int nlin, int ncol, int i, int j){
 
   return vizinhos;
 }
-
+/*inicializa o tabuleiro com um valor passado*/
 void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor)
 {
     int i,j;
@@ -216,12 +224,12 @@ void inicializa_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol, int valor
     }
 }
 
-
+/*escolhe o valor passado de inicializacao zero, como pedido no enunciado*/
 void zere_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 {
     inicializa_tabuleiro(tabuleiro, nlin, ncol, 0);
 }
-
+/*imprime o tabuleiro como pedido no enunciado*/
 void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
 {
   int i,j,ndig;
@@ -243,7 +251,7 @@ void imprima_tabuleiro(int tabuleiro[MAX][MAX], int nlin, int ncol)
   }
   printf("\n");
 }
-
+/*funcao auxiliar para a impressao do numero das colunas*/
 void printf_ncol(int ncol, int ndig){
     int i;
     printf("     ");
@@ -252,7 +260,7 @@ void printf_ncol(int ncol, int ndig){
     }
     printf("\n");
 }
-
+/*funcao auxiliar que imprime os '-' que separam as linhas e colunas*/
 void printf_tracejado(int ncol, int ndig){
     int i,j;
     printf("    +");
@@ -266,7 +274,7 @@ void printf_tracejado(int ncol, int ndig){
     }
     printf("\n");
 }
-
+/*funcao da leitura de Configuracao, como pedido no enunciado*/
 void leia_configuracao_inicial(int tabuleiro[MAX][MAX], int *nlin, int *ncol)
 {
   int i,j;
@@ -280,7 +288,7 @@ void leia_configuracao_inicial(int tabuleiro[MAX][MAX], int *nlin, int *ncol)
     scanf("%d", &i);
   }
 }
-
+/*copia duas matrizes , como sugerido no enunciado*/
 void copie_matriz(int origem[MAX][MAX], int destino[MAX][MAX],
                    int nlin, int ncol){
    int i,j;
